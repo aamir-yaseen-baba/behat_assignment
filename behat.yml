@@ -1,0 +1,70 @@
+default:
+  suites:
+    article:
+      paths: ['%paths.base%/features/ArticleFeature']
+      contexts:
+        - FeatureContext
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+      filters:
+        role: admin
+        tags: "@smoke"
+    search:
+     paths: ["%paths.base%/features/SearchFeature"]
+     contexts: [FeatureContext]
+     filters:
+       role: Anonymous user
+       tags: '@remote'
+local:
+  extensions:
+    Drupal\MinkExtension:
+      goutte: ~
+      selenium2:
+        browser: chrome
+        wd_host: http://127.0.0.1:4444/wd/hub
+        capabilities:
+          extra_capabilities:
+            chromeOptions:
+              args:
+                - "--start-fullscreen"
+              w3c: false
+      browser_name: chrome
+      default_session: selenium2
+      base_url: https://mywebsite.ddev.site
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: "drupal"
+      drush:
+        root: "/Users/aamiryaseenbaba/Desktop/new/mywebsite/web/"
+#        alias: "local"
+      drupal:
+        drupal_root: "/Users/aamiryaseenbaba/Desktop/new/mywebsite/web/"
+    SensioLabs\Behat\PageObjectExtension: ~
+
+remote:
+  extensions:
+    Drupal\MinkExtension:
+      goutte: ~
+      selenium2:
+        browser: chrome
+        wd_host: http://127.0.0.1:4444/wd/hub
+        capabilities:
+          extra_capabilities:
+            chromeOptions:
+              args:
+                - "--start-fullscreen"
+              w3c: false
+      browser_name: chrome
+      default_session: selenium2
+      base_url: https://test-umami-test.pantheonsite.io/
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: "drush"
+      drush:
+        root: "./web/" # provide path to remote site root
+        alias: "remote"
+      drupal:
+        drupal_root: "./web/" # provide path to remote site root
+    SensioLabs\Behat\PageObjectExtension: ~
